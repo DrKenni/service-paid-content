@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "andrey-fomichev-dw"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+packages = [{include = "andrey_fomichev_dw"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "^4.2.7"
+psycopg2-binary = "^2.9.9"
+pillow = "^10.1.0"
+python-dotenv = "^1.0.0"
+redis = "^5.0.1"
+django-crispy-forms = "^2.1"
+crispy-bootstrap5 = "^2023.10"
+stripe = "^7.6.0"
+celery = "^5.3.6"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

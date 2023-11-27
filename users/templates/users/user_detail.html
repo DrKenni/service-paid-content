@@ -1,0 +1,191 @@
+{% extends 'blog/base.html' %}
+{% load my_tags %}
+{% block content %}
+<main class="container">
+    <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
+        <div class="row mb-2">
+            <div class="col-md-12">
+                <div class="row g-0 ">
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <h1 class="mb-0">{{ user.username }}</h1>
+                        <p class="mb-auto">
+                            {% if user.description %}
+                            {{ user.description }}
+                            {% endif %}
+                        </p>
+                        <p class="gap-1">
+                            {{ user.first_name }} {{ user.last_name }}
+                            {% if user.surname %}
+                            {{ user.surname }}
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="col-auto d-none d-lg-block">
+                        <img src="{{ user.avatar|mymedia }}" width="500" height="500"
+                             class="bd-placeholder-img">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if best_post %}
+    <div class="row mb-2">
+        <div class="col-md-6">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <strong class="d-inline-block mb-2 text-primary-emphasis">A lot views post</strong>
+                    <a href="{% url 'users:profile' best_post.pk %}"
+                       class="link-secondary text-decoration-none">
+                        <img src="{{ best_post.owner.avatar|mymedia }}" width="32" height="32"
+                             class="rounded-circle me-2">
+                        <strong>{{ best_post.owner.email }}</strong>
+                    </a>
+                    <a href="{% url 'blog:view' best_post.pk %}"
+                       class="d-flex align-items-center text-decoration-none text-body-secondary">
+                        <h4 class="mb-0">
+                            {% if best_post.title %}
+                            {{ best_post.title }}
+                            {% endif %}
+                        </h4>
+                    </a>
+                    <div class="mb-1 text-body-secondary">
+                        <a href="{% url 'blog:view' best_post.pk %}"
+                           class="d-flex align-items-center text-decoration-none text-body-secondary">
+                            {{ best_post.content }}
+                        </a>
+                    </div>
+                    <div class="mb-1 text-body-secondary">{{ best_post.views }} просмотров</div>
+                    <div class="mb-1 text-body-secondary">{{ best_post.creation_date }}</div>
+                </div>
+                {% if best_post.image %}
+                <div class="col-auto d-none d-lg-block">
+                    <a href=" ">
+                        <img class="rounded float-end" width="200" height="" src="{{ best_post.image.url }}">
+                    </a>
+                </div>
+                {% endif %}
+                {% if best_post.video_url %}
+                <div class="ratio ratio-16x9">
+                    <iframe src="{{ best_post.video_url }}" title="YouTube video"
+                            allowfullscreen></iframe>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+        {% if best_post %}
+        <div class="col-md-6">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <strong class="d-inline-block mb-2 text-primary-emphasis">A lot comment</strong>
+                    <a href="{% url 'users:profile' user.pk %}"
+                       class="link-secondary text-decoration-none">
+                        <img src="{{ best_post.owner.avatar|mymedia }}" width="32" height="32"
+                             class="rounded-circle me-2">
+                        <strong>{{ post.owner.email }}</strong>
+                    </a>
+                    <a href="{% url 'blog:view' best_post.pk %}"
+                       class="d-flex align-items-center text-decoration-none text-body-secondary">
+                        <h4 class="mb-0">
+                            {% if best_post.title %}
+                            {{ best_post.title }}
+                            {% endif %}
+                        </h4>
+                    </a>
+                    <div class="mb-1 text-body-secondary">
+                        <a href="{% url 'blog:view' best_post.pk %}"
+                           class="d-flex align-items-center text-decoration-none text-body-secondary">
+                            {{ best_post.content }}
+                        </a>
+                    </div>
+                    <div class="mb-1 text-body-secondary">{{ best_post.views }} просмотров</div>
+                    <div class="mb-1 text-body-secondary">{{ best_post.creation_date }}</div>
+                </div>
+                {% if best_post.image %}
+                <div class="col-auto d-none d-lg-block">
+                    <a href=" ">
+                        <img class="rounded float-end" width="200" height="" src="{{ best_post.image.url }}">
+                    </a>
+                </div>
+                {% endif %}
+                {% if best_post.video_url %}
+                <div class="ratio ratio-16x9">
+                    <iframe src="{{ best_post.video_url }}" title="YouTube video"
+                            allowfullscreen></iframe>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="row g-5">
+        <div class="col-md-8">
+            <h3 class="pb-4 mb-4 fst-italic border-bottom">
+                Posts {{ user.username }}
+            </h3>
+            {% if request.user.pk == user.pk %}
+            <nav>
+                <a href="{% url 'blog:create' %}" type="button"
+                   class="mb-2 btn btn-primary">Создать новый пост</a>
+            </nav>
+            {% endif %}
+            {% for post in post_list %}
+            {% include 'users/includes/inc_post_container.html'%}
+
+            {% endfor %}
+        </div>
+
+        <div class="col-md-4">
+            <div class="position-sticky" style="top: 2rem;">
+                <div class="p-4 mb-3 bg-body-tertiary rounded">
+                    <h4 class="fst-italic">About me</h4>
+                    <p class="mb-0">
+                        {% if user.about_me %}
+                        {{ user.about_me }}
+                        {% else %}
+                        The user doesn’t want to talk about himself.
+                        {% endif %}
+                    </p>
+                </div>
+                <nav>
+                    {% if request.user.pk == user.pk %}
+                    {% elif i_sub is None %}
+                    <a href="{% url 'sub:subscribe' user.pk %}" type="button"
+                       class="mb-2 btn btn-primary">Follow</a>
+                    {% if plan is True %}
+                    <a href="{% url 'users:plan_list' user.pk %}" type="button"
+                       class="mb-2 btn btn-primary">Follow paid</a>
+                    {% endif %}
+                    {% elif i_sub and i_paid_sub is None %}
+                    <a href="{% url 'sub:unsubscribe' user.pk %}" type="button"
+                       class="mb-2 btn btn-danger">Unfollow</a>
+                    {% if plan %}
+                    <a href="{% url 'users:plan_list' user.pk %}" type="button"
+                       class="mb-2 btn btn-primary">Follow paid</a>
+                    {% endif %}
+                    {% elif i_paid_sub %}
+                    <a href="" type="button"
+                       class="mb-2 btn btn-success">You Sub</a>
+                    {% endif %}
+                </nav>
+                <div class="p-4">
+                    <h4 class="fst-italic">Elsewhere</h4>
+                    <ol class="list-unstyled">
+                        <li><a href="#">GitHub</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Facebook</a></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<footer class="py-5 text-center text-body-secondary bg-body-tertiary">
+    <p class="mb-0">
+        <a href="#">Back to top</a>
+    </p>
+</footer>
+{% endblock %}
