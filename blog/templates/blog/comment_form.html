@@ -36,18 +36,46 @@
                 <div class="mb-1 text-body-secondary">{{ post.creation_date }}</div>
             </div>
             {% if post.image %}
-            <div class="col-auto d-none d-lg-block">
-                <a href=" ">
-                    <img class="img-fluid" width="1000" src="{{ post.image.url }}">
-                </a>
-            </div>
+            {% if post.is_sub %}
+                {% for sub in sub_list %}
+                {% if request.user == sub.owner %}
+                    <div class="col-auto d-none d-lg-block">
+                        <a href=" ">
+                            <img class="img-fluid" width="1000" src="{{ post.image.url }}">
+                        </a>
+                    </div>
+                {% else %}
+                    <div class="col-auto d-none d-lg-block">
+                        <a href=" "
+                        class="d-flex text-decoration-none text-body-secondary">
+                            <img class="img-fluid center" style="filter: blur(30px)" width="1200" src="{{ post.image.url }}">
+                            <h1 >sdfgsdfgsd</h1>
+
+                        </a>
+                    </div>
+                {% endif %}
+                {% endfor %}
+            {% else %}
+                <div class="col-auto d-none d-lg-block">
+                    <a href=" ">
+                        <img class="img-fluid" width="1000" src="{{ post.image.url }}">
+                    </a>
+                </div>
             {% endif %}
-            {% if post.video_url %}
-            <div class="ratio ratio-16x9">
-                <iframe src="{{ post.video_url }}" title="YouTube video"
-                        allowfullscreen></iframe>
-            </div>
-            {% endif %}
+        {% endif %}
+<!--            {% if post.image %}-->
+<!--            <div class="col-auto d-none d-lg-block">-->
+<!--                <a href=" ">-->
+<!--                    <img class="img-fluid" width="1000" src="{{ post.image.url }}">-->
+<!--                </a>-->
+<!--            </div>-->
+<!--            {% endif %}-->
+<!--            {% if post.video_url %}-->
+<!--            <div class="ratio ratio-16x9">-->
+<!--                <iframe src="{{ post.video_url }}" title="YouTube video"-->
+<!--                        allowfullscreen></iframe>-->
+<!--            </div>-->
+<!--            {% endif %}-->
             <form class="mb-3" method="post">
                 {% csrf_token %}
                 {{ form|crispy }}

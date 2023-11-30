@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
 from django.http import Http404
 from django.shortcuts import redirect
@@ -9,6 +10,7 @@ from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from blog.forms import ArticleForm, CommentForm
 from blog.models import Article, Comment
 from blog.tasks import task_delete_img
+from subscription.models import PaidSubscription
 
 
 class ArticleCreateView(LoginRequiredMixin, CreateView):
@@ -150,7 +152,10 @@ class CommentCreateView(CreateView):
         article = Article.objects.get(pk=self.kwargs.get('pk'))
         context_data['post'] = article
         context_data['comment_list'] = Comment.objects.filter(article=article.id)
-
+        try:
+            context_data['sub_list'] = PaidSubscription.objects.filter(creator=article.owner)
+        except ObjectDoesNotExist:
+            context_data['sub_list'] = False
         return context_data
 
     def form_valid(self, form):
