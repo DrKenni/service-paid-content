@@ -17,6 +17,7 @@ django-crispy-forms = "^2.1"
 crispy-bootstrap5 = "^2023.10"
 stripe = "^7.6.0"
 celery = "^5.3.6"
+coverage = "^7.3.2"
 
 
 [build-system]

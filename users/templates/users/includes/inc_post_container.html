@@ -2,31 +2,28 @@
 <div class="col-md-12">
     <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
         <div class="col p-4 d-flex flex-column position-static">
-                {% if request.user.pk == post.owner.pk %}
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <button type="button" class="btn-close justify-content-md-end"
-                            aria-label="Close" href="{% url 'blog:delete' post.pk %}"></button>
-                </div>
-                {% endif %}
-                <a href="{% url 'users:profile' post.owner.pk %}"
-                   class="link-secondary text-decoration-none">
-                    <img src="{{ post.owner.avatar|mymedia }}" width="32" height="32"
-                         class="rounded-circle me-2">
-                    <strong>{{ post.owner.email }}</strong>
-                </a>
-
-
-            <a href="{% url 'blog:view' post.pk %}"
+            {% if request.user.pk == post.owner.pk %}
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <a type="button" class="btn-close justify-content-md-end"
+                   aria-label="Close" href="{% url 'blog:delete' post.pk %}"></a>
+            </div>
+            {% endif %}
+            <a href="{% url 'users:profile' post.owner.pk %}"
+               class="link-secondary text-decoration-none">
+                <img src="{{ post.owner.avatar|mymedia }}" width="32" height="32"
+                     class="rounded-circle me-2">
+                <strong>{{ post.owner.email }}</strong>
+            </a>
+            <a href="{% url 'blog:comment_create' post.pk %}"
                class="d-flex align-items-center text-decoration-none text-body-secondary">
                 <h4 class="mb-0">
                     {% if post.title %}
                     {{ post.title }}
                     {% endif %}
                 </h4>
-
             </a>
             <div class="mb-1 text-body-secondary">
-                <a href="{% url 'blog:view' post.pk %}"
+                <a href="{% url 'blog:comment_create' post.pk %}"
                    class="d-flex align-items-center text-decoration-none text-body-secondary">
                     {{ post.content }}
                 </a>
@@ -34,12 +31,37 @@
             <div class="mb-1 text-body-secondary">{{ post.views }} просмотров</div>
             <div class="mb-1 text-body-secondary">{{ post.creation_date }}</div>
         </div>
+        <a class="button d-grid gap-2 d-md-flex justify-content-md-end"
+           href="{% url 'blog:comment_create' post.pk %}">
+            <button class="btn btn-primary me-md-2 mb-2" type="button">Comment</button>
+        </a>
         {% if post.image %}
-        <div class="col-auto d-none d-lg-block">
-            <a href=" ">
-                <img class="img-fluid" width="1000" src="{{ post.image.url }}">
-            </a>
-        </div>
+            {% if post.is_sub %}
+                {% for sub in sub_list %}
+                {% if request.user == sub.owner %}
+                    <div class="col-auto d-none d-lg-block">
+                        <a href=" ">
+                            <img class="img-fluid" width="1000" src="{{ post.image.url }}">
+                        </a>
+                    </div>
+                {% else %}
+                    <div class="col-auto d-none d-lg-block">
+                        <a href=" "
+                        class="d-flex text-decoration-none text-body-secondary">
+                            <img class="img-fluid center" style="filter: blur(30px)" width="1000" src="{{ post.image.url }}">
+                            <h1 >sdfgsdfgsd</h1>
+
+                        </a>
+                    </div>
+                {% endif %}
+                {% endfor %}
+            {% else %}
+                <div class="col-auto d-none d-lg-block">
+                    <a href=" ">
+                        <img class="img-fluid" width="1000" src="{{ post.image.url }}">
+                    </a>
+                </div>
+            {% endif %}
         {% endif %}
         {% if post.video_url %}
         <div class="ratio ratio-16x9">
@@ -49,3 +71,4 @@
         {% endif %}
     </div>
 </div>
+<!--<text x="50%" y="50%" fill="var(&#45;&#45;bs-secondary-color)" dy=".3em">500x500</text>-->

@@ -1,0 +1,16 @@
+{% extends 'blog/base.html' %}
+{% load crispy_forms_tags %}
+{% crispy login login.helper %}
+{% block content %}
+<main class="container-xl">
+    <form method="post">
+        <h1 class="h3 mb-3 fw-normal">Подтверждение номера телефона</h1>
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Подтвердить
+        </button>
+    </form>
+    <a class="link p-3"
+       href="{% url 'users:verify_again' object.pk %}">Отправить код повторно</a>
+</main>
+{% endblock %}

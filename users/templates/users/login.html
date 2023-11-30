@@ -1,9 +1,7 @@
 {% extends 'blog/base.html' %}
 {% load crispy_forms_tags %}
 {% crispy login login.helper %}
-
 {% block content %}
-
     <main class="form-signin w-100 m-auto">
         <form method="post">
             {% csrf_token %}
@@ -14,6 +12,4 @@
             </footer>
         </form>
     </main>
-
-
 {% endblock %}

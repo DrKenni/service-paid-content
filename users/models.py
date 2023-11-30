@@ -19,7 +19,7 @@ class User(AbstractUser):
     about_me = models.CharField(max_length=300, verbose_name='о себе', **NULLABLE)
     description = models.CharField(max_length=400, verbose_name='комментарий', **NULLABLE)
     avatar = models.ImageField(upload_to='users/', verbose_name='аватар', **NULLABLE)
-    phone = models.CharField(max_length=35, verbose_name='телефон', unique=True, **NULLABLE)
+    phone = models.CharField(max_length=10, verbose_name='телефон', unique=True, **NULLABLE)
     sex = models.CharField(choices=(('male', 'Мужской пол'), ('female', 'Женский пол')),
                            default="male", max_length=40)
 
@@ -53,3 +53,11 @@ class SubPlan(models.Model):
     length = models.PositiveIntegerField(choices=CHOICES_PLAN, default=1, verbose_name='длительность')
     stripe_product_id = models.CharField(max_length=150, verbose_name='ID Stripe продукт', **NULLABLE)
     stripe_price_id = models.CharField(max_length=150, verbose_name='ID Stripe цена', **NULLABLE)
+
+
+class Verify(models.Model):
+    """Модель верификации по номеру телефона"""
+    user = models.OneToOneField(User, verbose_name='пользователь', on_delete=models.CASCADE,
+                                related_name='verify')
+    code = models.PositiveIntegerField(verbose_name='код верификации')
+    user_input = models.PositiveIntegerField(verbose_name='код пользователя', **NULLABLE)

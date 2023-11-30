@@ -1,0 +1,26 @@
+{% load my_tags %}
+<div class="col-md-12">
+    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+        <div class="col p-4 d-flex flex-column position-static">
+            {% if request.user.pk == com.writer.pk %}
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <a type="button" class="btn-close justify-content-md-end"
+                   aria-label="Close" href="{% url 'blog:comment_delete' com.pk %}"></a>
+            </div>
+            {% endif %}
+            <a href="{% url 'users:profile' com.writer.pk %}"
+               class="link-secondary text-decoration-none">
+                <img src="{{ com.writer.avatar|mymedia }}" width="32" height="32"
+                     class="rounded-circle me-2">
+                <strong>{{ com.writer.email }}</strong>
+            </a>
+            <div class="d-flex align-items-center text-decoration-none text-body-secondary">
+                {{ com.body }}
+            </div>
+            <div class="mb-1 text-body-secondary">{{ com.creation_date }}</div>
+        </div>
+        {% if com.image %}
+        <img class="img-fluid" width="1000" src="{{ com.image.url }}">
+        {% endif %}
+    </div>
+</div>

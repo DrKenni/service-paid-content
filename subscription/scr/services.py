@@ -16,12 +16,12 @@ class APIStripe:
     def create_product(self, name: str, price: int) -> dict:
         """Метод создает продукт в профиле используя API_KEY"""
         stripe.api_key = self.token
-        data = {'unit_amount': price,
-                "currency": 'usd'}
+        # data = {'unit_amount': price,
+        #         "currency": 'usd'}
 
         product = stripe.Product.create(name=name)
         product_price = stripe.Price.create(
-            unit_amount=price,
+            unit_amount=price * 100,
             currency='usd',
             product=product.stripe_id,
         )

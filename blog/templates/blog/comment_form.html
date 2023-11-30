@@ -1,0 +1,62 @@
+{% extends 'blog/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% load my_tags %}
+<main class="container-xl">
+    <div class="col-md-12">
+        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+            <div class="col p-4 d-flex flex-column position-static">
+                {% if request.user.pk == post.owner.pk %}
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <button type="button" class="btn-close justify-content-md-end"
+                            aria-label="Close" href="{% url 'blog:delete' post.pk %}"></button>
+                </div>
+                {% endif %}
+                <a href="{% url 'users:profile' post.owner.pk %}"
+                   class="link-secondary text-decoration-none">
+                    <img src="{{ post.owner.avatar|mymedia }}" width="32" height="32"
+                         class="rounded-circle me-2">
+                    <strong>{{ post.owner.email }}</strong>
+                </a>
+                <a href="{% url 'blog:comment_create' post.pk %}"
+                   class="d-flex align-items-center text-decoration-none text-body-secondary">
+                    <h4 class="mb-0">
+                        {% if post.title %}
+                        {{ post.title }}
+                        {% endif %}
+                    </h4>
+                </a>
+                <div class="mb-1 text-body-secondary">
+                    <a href="{% url 'blog:comment_create' post.pk %}"
+                       class="d-flex align-items-center text-decoration-none text-body-secondary">
+                        {{ post.content }}
+                    </a>
+                </div>
+                <div class="mb-1 text-body-secondary">{{ post.views }} просмотров</div>
+                <div class="mb-1 text-body-secondary">{{ post.creation_date }}</div>
+            </div>
+            {% if post.image %}
+            <div class="col-auto d-none d-lg-block">
+                <a href=" ">
+                    <img class="img-fluid" width="1000" src="{{ post.image.url }}">
+                </a>
+            </div>
+            {% endif %}
+            {% if post.video_url %}
+            <div class="ratio ratio-16x9">
+                <iframe src="{{ post.video_url }}" title="YouTube video"
+                        allowfullscreen></iframe>
+            </div>
+            {% endif %}
+            <form class="mb-3" method="post">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button class="btn btn-primary" type="submit">Post comment</button>
+            </form>
+            {% for com in comment_list %}
+            {% include 'blog/includes/inc_comment.html'%}
+            {% endfor %}
+        </div>
+    </div>
+</main>
+{% endblock %}

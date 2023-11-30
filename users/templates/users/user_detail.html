@@ -40,7 +40,7 @@
                              class="rounded-circle me-2">
                         <strong>{{ best_post.owner.email }}</strong>
                     </a>
-                    <a href="{% url 'blog:view' best_post.pk %}"
+                    <a href="{% url 'blog:comment_create' best_post.pk %}"
                        class="d-flex align-items-center text-decoration-none text-body-secondary">
                         <h4 class="mb-0">
                             {% if best_post.title %}
@@ -49,7 +49,7 @@
                         </h4>
                     </a>
                     <div class="mb-1 text-body-secondary">
-                        <a href="{% url 'blog:view' best_post.pk %}"
+                        <a href="{% url 'blog:comment_create' best_post.pk %}"
                            class="d-flex align-items-center text-decoration-none text-body-secondary">
                             {{ best_post.content }}
                         </a>
@@ -73,44 +73,44 @@
             </div>
         </div>
         {% endif %}
-        {% if best_post %}
+        {% if discussed_post %}
         <div class="col-md-6">
             <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                 <div class="col p-4 d-flex flex-column position-static">
                     <strong class="d-inline-block mb-2 text-primary-emphasis">A lot comment</strong>
                     <a href="{% url 'users:profile' user.pk %}"
                        class="link-secondary text-decoration-none">
-                        <img src="{{ best_post.owner.avatar|mymedia }}" width="32" height="32"
+                        <img src="{{ discussed_post.owner.avatar|mymedia }}" width="32" height="32"
                              class="rounded-circle me-2">
                         <strong>{{ post.owner.email }}</strong>
                     </a>
-                    <a href="{% url 'blog:view' best_post.pk %}"
+                    <a href="{% url 'blog:comment_create' discussed_post.pk %}"
                        class="d-flex align-items-center text-decoration-none text-body-secondary">
                         <h4 class="mb-0">
-                            {% if best_post.title %}
-                            {{ best_post.title }}
+                            {% if discussed_post.title %}
+                            {{ discussed_post.title }}
                             {% endif %}
                         </h4>
                     </a>
                     <div class="mb-1 text-body-secondary">
-                        <a href="{% url 'blog:view' best_post.pk %}"
+                        <a href="{% url 'blog:comment_create' discussed_post.pk %}"
                            class="d-flex align-items-center text-decoration-none text-body-secondary">
-                            {{ best_post.content }}
+                            {{ discussed_post.content }}
                         </a>
                     </div>
-                    <div class="mb-1 text-body-secondary">{{ best_post.views }} просмотров</div>
-                    <div class="mb-1 text-body-secondary">{{ best_post.creation_date }}</div>
+                    <div class="mb-1 text-body-secondary">{{ discussed_post.views }} просмотров</div>
+                    <div class="mb-1 text-body-secondary">{{ discussed_post.creation_date }}</div>
                 </div>
-                {% if best_post.image %}
+                {% if discussed_post.image %}
                 <div class="col-auto d-none d-lg-block">
                     <a href=" ">
-                        <img class="rounded float-end" width="200" height="" src="{{ best_post.image.url }}">
+                        <img class="rounded float-end" width="200" height="" src="{{ discussed_post.image.url }}">
                     </a>
                 </div>
                 {% endif %}
-                {% if best_post.video_url %}
+                {% if discussed_post.video_url %}
                 <div class="ratio ratio-16x9">
-                    <iframe src="{{ best_post.video_url }}" title="YouTube video"
+                    <iframe src="{{ discussed_post.video_url }}" title="YouTube video"
                             allowfullscreen></iframe>
                 </div>
                 {% endif %}
@@ -170,12 +170,12 @@
                     {% endif %}
                 </nav>
                 <div class="p-4">
-                    <h4 class="fst-italic">Elsewhere</h4>
-                    <ol class="list-unstyled">
-                        <li><a href="#">GitHub</a></li>
-                        <li><a href="#">Twitter</a></li>
-                        <li><a href="#">Facebook</a></li>
-                    </ol>
+<!--                    <h4 class="fst-italic">Elsewhere</h4>-->
+<!--                    <ol class="list-unstyled">-->
+<!--                        <li><a href="#">GitHub</a></li>-->
+<!--                        <li><a href="#">Twitter</a></li>-->
+<!--                        <li><a href="#">Facebook</a></li>-->
+<!--                    </ol>-->
                 </div>
             </div>
         </div>

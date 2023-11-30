@@ -1,6 +1,6 @@
 from django import forms
 
-from blog.models import Article
+from blog.models import Article, Comment
 from blog.services import ReExpression
 from users.forms import StyleFormMixin
 
@@ -15,17 +15,19 @@ class ArticleForm(StyleFormMixin, forms.ModelForm):
         """Переопределение для добавления video_id во время сохранения"""
 
         self.instance = super().save(commit=False)
-        video_id = ReExpression.get_video_id(self.cleaned_data['video_url'])
-        self.instance.video_url = f'https://www.youtube.com/embed/{video_id}'
+        if self.cleaned_data['video_url'] is not None:
+            video_id = ReExpression.get_video_id(self.cleaned_data['video_url'])
+            self.instance.video_url = f'https://www.youtube.com/embed/{video_id}'
         self.instance.save()
         return self.instance
 
     def clean_title(self):
         """Проверка на наличие запрещенных слов в загаловке"""
         cleaned_data = self.cleaned_data['title']
-        for word in self.banned_words:
-            if word in cleaned_data.lower():
-                raise forms.ValidationError('В названии есть запрещенные слова!')
+        if cleaned_data is not None:
+            for word in self.banned_words:
+                if word in cleaned_data.lower():
+                    raise forms.ValidationError('В названии есть запрещенные слова!')
         return cleaned_data
 
     def clean_content(self):
@@ -59,3 +61,11 @@ class ArticleForm(StyleFormMixin, forms.ModelForm):
             'is_published': 'Пост будет доступен отовсюду или только в вашем профиле',
             'video_url': 'Можно добавить сылку на видео с youtube.com'
         }
+
+
+class CommentForm(StyleFormMixin, forms.ModelForm):
+
+    class Meta:
+        model = Comment
+        fields = ('body',
+                  'image')

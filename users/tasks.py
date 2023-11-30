@@ -1,7 +1,10 @@
+from celery import shared_task
+
 from subscription.scr.services import APIStripe
 from users.models import SubPlan
 
 
+@shared_task
 def task_create_product(pk):
     """Отложеная задача по созданию продукта"""
     stripe_api = APIStripe()
@@ -13,5 +16,7 @@ def task_create_product(pk):
     plan.save()
 
 
+@shared_task
 def task_delete_product(product_id):
+    """Удаляет продукт в stripe"""
     APIStripe().delete_product(product_id)

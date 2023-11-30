@@ -52,6 +52,7 @@ class PaymentCreateView(LoginRequiredMixin, CreateView):
         """Направляет позьзователя на оплату"""
         current_site = get_current_site(request)
         previous_url = request.META.get('HTTP_REFERER')
+
         payment_url = Pay(user=request.user).create_payment(
             plan_pk=kwargs.get('pk'),
             previous_url=previous_url,

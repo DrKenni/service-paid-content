@@ -33,7 +33,7 @@ class Comment(models.Model):
 
     body = models.TextField(verbose_name='содержимое')
     article = models.ForeignKey(Article, verbose_name='статья', on_delete=models.CASCADE,
-                                related_name='comment')
+                                related_name='comment', **NULLABLE)
     image = models.ImageField(upload_to=user_directory_path, verbose_name='превью', **NULLABLE)
     active = models.BooleanField(default=True)
     creation_date = models.DateField(auto_now_add=timezone.now, verbose_name='дата создания')
